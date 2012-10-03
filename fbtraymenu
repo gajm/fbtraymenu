@@ -1,0 +1,52 @@
+#! /usr/bin/env python
+# -*- coding: utf8 -*-
+# Copyleft 2012 gajm
+# Released under the WTFPLv2
+
+import gtk,os
+
+class FBTrayMenuApp:
+    def __init__(self):
+        self.tray = gtk.StatusIcon()
+        self.tray.set_from_icon_name("start-here")
+        self.tray.connect('activate', self.on_activate)
+        self.tray.connect('popup-menu', self.on_right_click)
+        self.tray.set_tooltip(('Fluxbox RootMenu'))
+        
+    def on_activate(self, event):
+        os.system('fluxbox-remote "RootMenu"')
+
+    def on_right_click(self, icon, event_button, event_time):
+        self.make_menu(event_button, event_time)
+
+    def make_menu(self, event_button, event_time):
+        menu = gtk.Menu()
+
+        about = gtk.MenuItem("About")
+        about.show()
+        menu.append(about)
+        about.connect('activate', self.show_about_dialog)
+
+        quit = gtk.MenuItem("Quit")
+        quit.show()
+        menu.append(quit)
+        quit.connect('activate', gtk.main_quit)
+
+        menu.popup(None, None, gtk.status_icon_position_menu, 
+        event_button, event_time, self.tray)
+
+    def show_about_dialog(self, widget):
+        about_dialog = gtk.AboutDialog()
+        about_dialog.set_destroy_with_parent (True)
+        about_dialog.set_icon_name ("fbtraymenu")
+        about_dialog.set_name('fbtraymenu')
+        about_dialog.set_version('0.1')
+        about_dialog.set_comments(("Fluxbox systemtray menu launcher"))
+        about_dialog.set_copyright("Copyleft 2012 gajm")
+        about_dialog.set_comments(("Fluxbox systemtray menu launcher"))
+        about_dialog.run()
+        about_dialog.destroy()
+
+if __name__ == "__main__":
+    FBTrayMenuApp()
+    gtk.main()

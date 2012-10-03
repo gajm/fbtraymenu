@@ -1,0 +1,11 @@
+Simple Fluxbox systemtray rootmenu launcher.
+
+
+Requires activation of fluxbox-remote:
+
+   ~/.fluxbox/init
+
+--------------------------------------------
+session.screen0.allowRemoteActions:	true
+--------------------------------------------
+
